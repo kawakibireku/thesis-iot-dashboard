@@ -4,7 +4,7 @@ import Devices from "../components/devices/index.vue"
 </script>
 
 <template>
-  <div class="w-full bg-[#06202B]">
+  <div class="w-full __background-dashboard">
     <Header />
     <Devices />
   </div>
@@ -15,16 +15,7 @@ export const clientOnly = true
 </script>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.__background-dashboard {
+  background-color: var(--bg-secondary);
 }
 </style>

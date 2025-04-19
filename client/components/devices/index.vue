@@ -105,14 +105,31 @@ export default {
 
 <style>
 .primary-button {
-  background-color: #7AE2CF;
+  background-color: transparent;
+  color: #cd23b2;
+  border-color: #cd23b2;
   border-radius: 5px;
   min-width: 100px;
   transition: all 150ms ease-in;
 }
 
-.primary-button:hover, .active {
-  background-color: #077A7D;
-  color: #F5EEDD;
+.primary-button:hover {
+  cursor: pointer;
+}
+
+.active {
+  animation: scale 150ms;
+  transform: scale(1.1);
+  background-image: linear-gradient(to bottom, #e14eca, #ba54f5) !important;
+  color: var(--bg-primary);
+}
+
+@keyframes scale {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
 }
 </style>

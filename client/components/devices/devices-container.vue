@@ -48,7 +48,7 @@ onMounted(() => {
 .card {
   padding: 10px;
   border-radius: 5px;
-  background-color: #0a3243;
+  background-color: var(--bg-primary);
 }
 
 .active {

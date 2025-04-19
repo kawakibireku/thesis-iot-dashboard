@@ -1,6 +1,7 @@
 <script>
 export { default } from '$app/router.vue';
 import "./base.css"
+import "./black-dashboard.css";
 
 export function configure({ app, router, isClient }) {
   if (isClient) {

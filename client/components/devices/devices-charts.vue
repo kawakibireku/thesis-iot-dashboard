@@ -21,6 +21,9 @@ const chartOptions = ref({
   chart: {
     type: 'line',
   },
+  fill: {
+    colors: ['#6610f2']
+  },
   xaxis: {
     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
   },
