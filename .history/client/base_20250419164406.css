@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+
+:root {
+  --dp-input-padding: 50px; /*Padding in the input*/
+}

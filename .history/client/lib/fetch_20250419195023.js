@@ -1,0 +1,1 @@
+async function getDeviceData(id=1, )
