@@ -27,7 +27,7 @@ async function changeDevice(id) {
       typeSelected.value,
       [startDate, endDate]
     );
-    dataChart = response;
+    dataChart.value = response;
   }
 }
 
@@ -43,7 +43,7 @@ async function changeType(id) {
       [startDate, endDate]
     );
 
-    dataChart = response;
+    dataChart.value = response;
   }
 }
 
@@ -58,7 +58,7 @@ async function handleDate(modelDate) {
     [startDate, endDate]
   );
 
-  dataChart = response;
+  dataChart.value = response;
 }
 
 watch(date, handleDate);
@@ -72,7 +72,7 @@ onMounted(async () => {
     typeSelected.value,
     [startDate, endDate]
   );
-  dataChart = response;
+  dataChart.value = response;
 });
 </script>
 
@@ -144,12 +144,13 @@ onMounted(async () => {
 
       <!-- body charts -->
       <DevicesCharts
-        :deviceId="deviceSelected.value"
-        :type="typeSelected.value"
-        :startDate="date.value[0].toISOString().split('T')[0]"
-        :endDate="date.value[1].toISOString().split('T')[0]"
-        :chartData="dataChart?.chartData"
-      />
+  :deviceId="deviceSelected"
+  :type="typeSelected"
+  :startDate="date[0].toISOString().split('T')[0]"
+  :endDate="date[1].toISOString().
+  split('T')[0]"
+  :chartData="dataChart"
+/>
     </div>
   </div>
 </template>
