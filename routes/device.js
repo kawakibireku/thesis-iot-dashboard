@@ -98,6 +98,7 @@ export default async function deviceRoutes(server, options) {
       // Execute query and collect results
       const results = [];
       const timeMap = new Map(); // Use a Map to deduplicate by timestamp
+      const DEFAULT_COLOR = '#939393'
 
       await new Promise((resolve, reject) => {
         queryApi.queryRows(query, {
@@ -166,6 +167,8 @@ export default async function deviceRoutes(server, options) {
 
       // Format data for ApexCharts
       const seriesName = type || 'Reading';
+      const xAxisColors = categories.map(() => DEFAULT_COLOR)
+
       const chartData = {
         series: [
           {
@@ -211,6 +214,9 @@ export default async function deviceRoutes(server, options) {
             labels: {
               rotateAlways: false,
               hideOverlappingLabels: true,
+              style: {
+                colors: xAxisColors
+              }
             },
           },
           yaxis: {
@@ -221,6 +227,11 @@ export default async function deviceRoutes(server, options) {
                 fontWeight: 'bold',
               },
             },
+            labels: {
+              style: {
+                colors: DEFAULT_COLOR
+              }
+            }
           },
           fill: {
             colors: ['#6610f2'],

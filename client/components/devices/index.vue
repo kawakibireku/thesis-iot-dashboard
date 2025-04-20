@@ -10,14 +10,15 @@ const today = new Date();
 const startOfDay = new Date(today.setHours(0, 0, 0, 0));
 const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 const date = ref([startOfDay, endOfDay]);
+const loading = ref(false)
 
 const deviceSelected = ref("ECG-1");
 const typeSelected = ref("CO2");
 const dataChart = ref(null);
 
 async function changeDevice(id) {
-  console.log(id);
   if (id !== deviceSelected.value) {
+    loading.value = true
     deviceSelected.value = id;
     // Convert dates to ISO strings
     const startDate = date.value[0].toISOString().split("T")[0];
@@ -27,12 +28,17 @@ async function changeDevice(id) {
       typeSelected.value,
       [startDate, endDate]
     );
+
+    if(response) {
+    loading.value = false
     dataChart.value = response;
+    }
   }
 }
 
 async function changeType(id) {
   if (id !== typeSelected.value) {
+    loading.value = true
     typeSelected.value = id;
     // Convert dates to ISO strings
     const startDate = date.value[0].toISOString().split("T")[0];
@@ -43,11 +49,15 @@ async function changeType(id) {
       [startDate, endDate]
     );
 
+    if(response) {
+    loading.value = false
     dataChart.value = response;
+    }
   }
 }
 
 async function handleDate(modelDate) {
+  loading.value = true
   date.value = modelDate;
   // Convert dates to ISO strings
   const startDate = modelDate[0].toISOString().split("T")[0];
@@ -58,7 +68,10 @@ async function handleDate(modelDate) {
     [startDate, endDate]
   );
 
-  dataChart.value = response;
+  if(response) {
+    loading.value = false
+    dataChart.value = response;
+  }
 }
 
 watch(date, handleDate);
@@ -149,6 +162,7 @@ onMounted(async () => {
         :startDate="date[0].toISOString().split('T')[0]"
         :endDate="date[1].toISOString().split('T')[0]"
         :chartData="dataChart"
+        :isLoading="loading"
       />
     </div>
   </div>
