@@ -40,11 +40,11 @@ export default async function deviceRoutes(server, options) {
 
       // Build Flux query based on provided parameters
       let query = `
-        from(bucket: "${bucket}")
-          |> range(start: ${startDate || '-1h'}, stop: ${endDate || 'now()'})
-          |> filter(fn: (r) => r["_measurement"] == "emission")
-          |> filter(fn: (r) => r["device_id"] == "${id}")
-      `;
+      from(bucket: "${bucket}")
+        |> range(start: ${startDate || '-1h'}, stop: ${endDate || 'now()'})
+        |> filter(fn: (r) => r["_measurement"] == "emission")
+        |> filter(fn: (r) => r["device_id"] == "${id}")
+    `;
 
       // Add type filter if provided (CO, NO2, CO2, or TVOC)
       if (type) {
@@ -52,21 +52,34 @@ export default async function deviceRoutes(server, options) {
       }
 
       query += `
-          |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
-          |> yield(name: "mean")
-      `;
+        |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+        |> yield(name: "mean")
+        |> sort(columns: ["_time"])
+    `;
 
       // Execute query and collect results
       const results = [];
+      const categories = [];
+      const values = [];
+
       await new Promise((resolve, reject) => {
         queryApi.queryRows(query, {
           next(row, tableMeta) {
             const o = tableMeta.toObject(row);
+
+            // Store original format for reference
             results.push({
               time: o._time,
               value: o._value,
               field: o._field,
             });
+
+            // Store data for ApexCharts format
+            // Format the timestamp for display
+            const timestamp = new Date(o._time);
+            const formattedTime = timestamp.toLocaleString();
+            categories.push(formattedTime);
+            values.push(o._value);
           },
           error(error) {
             reject(error);
@@ -77,8 +90,36 @@ export default async function deviceRoutes(server, options) {
         });
       });
 
+      // Format data for ApexCharts
+      const seriesName = type || 'Reading';
+      const chartData = {
+        series: [
+          {
+            name: `${seriesName} Levels`,
+            data: values,
+          },
+        ],
+        options: {
+          chart: {
+            type: 'line',
+            height: 500,
+          },
+          xaxis: {
+            categories: categories,
+          },
+          fill: {
+            colors: ['#6610f2'],
+          },
+          title: {
+            text: `${type || 'All'} Readings for ${id}`,
+            align: 'center',
+          },
+        },
+      };
+
       return {
         data: results,
+        chartData: chartData,
         query: {
           id,
           type,

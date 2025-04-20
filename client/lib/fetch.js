@@ -1,7 +1,8 @@
-async function getDeviceData(id = 1, type, dateRange) {
+async function getDeviceData(id, type, dateRange) {
   if (!dateRange) {
     dateRange = [Date.now(), Date.now()]; // Fixed Date.now() syntax
   }
+  console.log(dateRange);
   try {
     // Use import.meta.env instead of process.env
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
