@@ -1,18 +1,18 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
-import DevicesContainer from './devices-container.vue';
-import DevicesCharts from './devices-charts.vue';
-import { getDeviceData } from '../../lib/fetch';
+import { ref, watch, onMounted } from "vue";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+import DevicesContainer from "./devices-container.vue";
+import DevicesCharts from "./devices-charts.vue";
+import { getDeviceData } from "../../lib/fetch";
 
 const today = new Date();
 const startOfDay = new Date(today.setHours(0, 0, 0, 0));
 const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 const date = ref([startOfDay, endOfDay]);
 
-const deviceSelected = ref('ECG-1');
-const typeSelected = ref('CO2');
+const deviceSelected = ref("ECG-1");
+const typeSelected = ref("CO2");
 const dataChart = ref(null);
 
 async function changeDevice(id) {
@@ -20,8 +20,8 @@ async function changeDevice(id) {
   if (id !== deviceSelected.value) {
     deviceSelected.value = id;
     // Convert dates to ISO strings
-    const startDate = date.value[0].toISOString().split('T')[0];
-    const endDate = date.value[1].toISOString().split('T')[0];
+    const startDate = date.value[0].toISOString().split("T")[0];
+    const endDate = date.value[1].toISOString().split("T")[0];
     const response = await getDeviceData(
       deviceSelected.value,
       typeSelected.value,
@@ -35,8 +35,8 @@ async function changeType(id) {
   if (id !== typeSelected.value) {
     typeSelected.value = id;
     // Convert dates to ISO strings
-    const startDate = date.value[0].toISOString().split('T')[0];
-    const endDate = date.value[1].toISOString().split('T')[0];
+    const startDate = date.value[0].toISOString().split("T")[0];
+    const endDate = date.value[1].toISOString().split("T")[0];
     const response = await getDeviceData(
       deviceSelected.value,
       typeSelected.value,
@@ -50,8 +50,8 @@ async function changeType(id) {
 async function handleDate(modelDate) {
   date.value = modelDate;
   // Convert dates to ISO strings
-  const startDate = modelDate[0].toISOString().split('T')[0];
-  const endDate = modelDate[1].toISOString().split('T')[0];
+  const startDate = modelDate[0].toISOString().split("T")[0];
+  const endDate = modelDate[1].toISOString().split("T")[0];
   const response = await getDeviceData(
     deviceSelected.value,
     typeSelected.value,
@@ -65,8 +65,8 @@ watch(date, handleDate);
 watch(deviceSelected, changeDevice);
 watch(typeSelected, changeType);
 onMounted(async () => {
-  const startDate = date.value[0].toISOString().split('T')[0];
-  const endDate = date.value[1].toISOString().split('T')[0];
+  const startDate = date.value[0].toISOString().split("T")[0];
+  const endDate = date.value[1].toISOString().split("T")[0];
   const response = await getDeviceData(
     deviceSelected.value,
     typeSelected.value,
@@ -144,13 +144,12 @@ onMounted(async () => {
 
       <!-- body charts -->
       <DevicesCharts
-  :deviceId="deviceSelected"
-  :type="typeSelected"
-  :startDate="date[0].toISOString().split('T')[0]"
-  :endDate="date[1].toISOString().
-  split('T')[0]"
-  :chartData="dataChart"
-/>
+        :deviceId="deviceSelected"
+        :type="typeSelected"
+        :startDate="date[0].toISOString().split('T')[0]"
+        :endDate="date[1].toISOString().split('T')[0]"
+        :chartData="dataChart"
+      />
     </div>
   </div>
 </template>
