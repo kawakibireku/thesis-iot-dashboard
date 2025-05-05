@@ -45,12 +45,6 @@ onMounted(() => {
 </template>
 
 <style>
-.card {
-  padding: 10px;
-  border-radius: 5px;
-  background-color: var(--bg-primary);
-}
-
 .active {
   background-color: green;
 }

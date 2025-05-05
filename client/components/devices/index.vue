@@ -4,6 +4,7 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import DevicesContainer from "./devices-container.vue";
 import DevicesCharts from "./devices-charts.vue";
+import DevicesTcpu from "./devices-tcpu.vue";
 import { getDeviceData } from "../../lib/fetch";
 
 const today = new Date();
@@ -15,6 +16,12 @@ const loading = ref(false)
 const deviceSelected = ref("ECG-1");
 const typeSelected = ref("CO2");
 const dataChart = ref(null);
+
+const devicesTcpu = ref([
+  { id: "ECG-1", name: "ECG-1", status: "active", lastUpdated: "2023-10-01", sensor: {no2: 10, co: 150} },
+  { id: "ECG-2", name: "ECG-2", status: "inactive", lastUpdated: "2023-10-02", sensor: {no2: 151, co: 201} },
+  { id: "ECG-3", name: "ECG-3", status: "active", lastUpdated: "2023-10-03", sensor: {no2: 250, co: 301} },
+]);
 
 async function changeDevice(id) {
   if (id !== deviceSelected.value) {
@@ -100,6 +107,11 @@ onMounted(async () => {
     ></VueDatePicker>
     <!-- device information -->
     <DevicesContainer class="mb-5" />
+    <devicesTcpu 
+      :devices="devicesTcpu"
+      :error="null"
+      :loading="false"
+    />
     <!-- device charts -->
     <div class="card col-span-3">
       <!-- header charts -->
